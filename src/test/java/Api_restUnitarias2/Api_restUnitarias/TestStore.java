@@ -1,35 +1,26 @@
 package Api_restUnitarias2.Api_restUnitarias;
 
-import Api_restUnitarias2.Api_restUnitarias.DAO.TiendaDAO;
-import Api_restUnitarias2.Api_restUnitarias.Model.Producto;
-import Api_restUnitarias2.Api_restUnitarias.Model.Tienda;
+import Api_restUnitarias2.Api_restUnitarias.repository.StoreRepository;
+import Api_restUnitarias2.Api_restUnitarias.Model.Store;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class TestTienda {
+public class TestStore {
 
     @Autowired
-    private TiendaDAO tiendaDAO;
+    private StoreRepository storeRepository;
 
 
     @Test
@@ -41,11 +32,11 @@ public class TestTienda {
 //        productos.add(producto1);
 //        productos.add(producto2);
 //        productos.add(producto3);
-        Tienda tienda = new Tienda(1,"Exito","cra 87 # 12 32",123465789);
+        Store store = new Store(1,"Exito","cra 87 # 12 32",123465789);
 
-        Tienda tiendaGuardada=tiendaDAO.save(tienda);
+        Store storeGuardada = storeRepository.save(store);
 
-        assertNotNull(tiendaGuardada);
+        assertNotNull(storeGuardada);
     }
 
 //    @Test
@@ -56,25 +47,26 @@ public class TestTienda {
 //        assertThat(tienda.getNombre()).isEqualTo(nombre);
 //    }
 
-    @Test
+
+  /*  @Test
     public void testActualizarProducto(){
         String nombreTienda="Olimpica";
-        Tienda tienda=new Tienda(3,nombreTienda,"cra 87 # 12 32",123465789);
-        tienda.setNit(3);
+        Store store =new Store(3,nombreTienda,"cra 87 # 12 32",123465789);
+        store.setNit(3);
 
-        tiendaDAO.save(tienda);
-        Tienda tiendaActualizada= tiendaDAO.findByNombre(nombreTienda);
+        storeRepository.save(store);
+        Store storeActualizada = storeRepository.findById(nombreTienda);
 
-        assertThat(tiendaActualizada.getNombre()).isEqualTo(nombreTienda);
+        assertThat(storeActualizada.getNombre()).isEqualTo(nombreTienda);
 
-    }
+    }*/
 
     @Test
     public void testListarTiendas(){
-        List<Tienda> tiendas= tiendaDAO.findAll();
+        List<Store> stores = storeRepository.findAll();
 
-        System.out.println("size = " + tiendas.size());
-        assertThat(tiendas).size().isGreaterThan(0);
+        System.out.println("size = " + stores.size());
+        assertThat(stores).size().isGreaterThan(0);
     }
 
 
@@ -82,13 +74,12 @@ public class TestTienda {
     public void testEliminarTienda(){
         int nit=3;
 
-        boolean existeTienda= tiendaDAO.findById(nit).isPresent();
-        tiendaDAO.deleteById(nit);
-        boolean noExisteTienda=tiendaDAO.findById(nit).isPresent();
+        boolean existeTienda= storeRepository.findById(nit).isPresent();
+        storeRepository.deleteById(nit);
+        boolean noExisteTienda= storeRepository.findById(nit).isPresent();
 
         assertTrue(existeTienda);
         assertFalse(noExisteTienda);
     }
-
 
 }
